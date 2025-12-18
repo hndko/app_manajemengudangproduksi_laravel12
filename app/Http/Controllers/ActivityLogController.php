@@ -16,6 +16,6 @@ class ActivityLogController extends Controller
             ->latest()
             ->paginate(50);
 
-        return view('activity-logs.index', compact('logs'));
+        return view('backend.activity-logs.index', compact('logs'));
     }
 }

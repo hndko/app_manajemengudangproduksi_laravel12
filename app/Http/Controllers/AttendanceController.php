@@ -16,12 +16,12 @@ class AttendanceController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('attendances.index', compact('attendances'));
+        return view('backend.attendances.index', compact('attendances'));
     }
 
     public function create()
     {
-        return view('attendances.create');
+        return view('backend.attendances.create');
     }
 
     public function store(Request $request)
@@ -44,12 +44,12 @@ class AttendanceController extends Controller
 
     public function show(Attendance $attendance)
     {
-        return view('attendances.show', compact('attendance'));
+        return view('backend.attendances.show', compact('attendance'));
     }
 
     public function edit(Attendance $attendance)
     {
-        return view('attendances.edit', compact('attendance'));
+        return view('backend.attendances.edit', compact('attendance'));
     }
 
     public function update(Request $request, Attendance $attendance)

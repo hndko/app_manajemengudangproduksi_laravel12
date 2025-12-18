@@ -20,7 +20,7 @@ class StockController extends Controller
             ->when($selectedWarehouse, fn($q) => $q->where('warehouse_id', $selectedWarehouse->id))
             ->paginate(20);
 
-        return view('warehouse.stocks.index', compact('stocks', 'warehouses', 'selectedWarehouse'));
+        return view('backend.warehouse.stocks.index', compact('stocks', 'warehouses', 'selectedWarehouse'));
     }
 
     public function create()
@@ -28,7 +28,7 @@ class StockController extends Controller
         $warehouses = Warehouse::active()->get();
         $materials = Material::active()->get();
         $products = Product::active()->get();
-        return view('warehouse.stocks.create', compact('warehouses', 'materials', 'products'));
+        return view('backend.warehouse.stocks.create', compact('warehouses', 'materials', 'products'));
     }
 
     public function store(Request $request)
@@ -56,12 +56,12 @@ class StockController extends Controller
     public function show(Stock $stock)
     {
         $stock->load(['stockable', 'warehouse', 'movements.creator']);
-        return view('warehouse.stocks.show', compact('stock'));
+        return view('backend.warehouse.stocks.show', compact('stock'));
     }
 
     public function edit(Stock $stock)
     {
-        return view('warehouse.stocks.edit', compact('stock'));
+        return view('backend.warehouse.stocks.edit', compact('stock'));
     }
 
     public function update(Request $request, Stock $stock)

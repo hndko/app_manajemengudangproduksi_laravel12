@@ -25,12 +25,12 @@ class UnitController extends Controller
             'filters' => $request->only(['search']),
         ];
 
-        return view('master-data.units.index', $data);
+        return view('backend.master-data.units.index', $data);
     }
 
     public function create()
     {
-        return view('master-data.units.create');
+        return view('backend.master-data.units.create');
     }
 
     public function store(Request $request)
@@ -53,7 +53,7 @@ class UnitController extends Controller
             'unit' => $unit,
         ];
 
-        return view('master-data.units.edit', $data);
+        return view('backend.master-data.units.edit', $data);
     }
 
     public function update(Request $request, Unit $unit)

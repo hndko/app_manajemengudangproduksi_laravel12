@@ -39,7 +39,7 @@ class MaterialController extends Controller
             'filters' => $request->only(['category_id', 'search', 'is_active']),
         ];
 
-        return view('warehouse.materials.index', $data);
+        return view('backend.warehouse.materials.index', $data);
     }
 
     public function create()
@@ -49,7 +49,7 @@ class MaterialController extends Controller
             'units' => Unit::all(),
         ];
 
-        return view('warehouse.materials.create', $data);
+        return view('backend.warehouse.materials.create', $data);
     }
 
     public function store(Request $request)
@@ -89,7 +89,7 @@ class MaterialController extends Controller
             'material' => $material->load(['category', 'unit', 'stocks.warehouse']),
         ];
 
-        return view('warehouse.materials.show', $data);
+        return view('backend.warehouse.materials.show', $data);
     }
 
     public function edit(Material $material)
@@ -100,7 +100,7 @@ class MaterialController extends Controller
             'units' => Unit::all(),
         ];
 
-        return view('warehouse.materials.edit', $data);
+        return view('backend.warehouse.materials.edit', $data);
     }
 
     public function update(Request $request, Material $material)

@@ -30,12 +30,12 @@ class WarehouseController extends Controller
             'filters' => $request->only(['search', 'is_active']),
         ];
 
-        return view('master-data.warehouses.index', $data);
+        return view('backend.master-data.warehouses.index', $data);
     }
 
     public function create()
     {
-        return view('master-data.warehouses.create');
+        return view('backend.master-data.warehouses.create');
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class WarehouseController extends Controller
             'warehouse' => $warehouse,
         ];
 
-        return view('master-data.warehouses.edit', $data);
+        return view('backend.master-data.warehouses.edit', $data);
     }
 
     public function update(Request $request, Warehouse $warehouse)

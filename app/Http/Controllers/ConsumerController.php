@@ -32,7 +32,7 @@ class ConsumerController extends Controller
             'filters' => $request->only(['search', 'is_active']),
         ];
 
-        return view('master-data.consumers.index', $data);
+        return view('backend.master-data.consumers.index', $data);
     }
 
     public function create()
@@ -41,7 +41,7 @@ class ConsumerController extends Controller
             'lastCode' => Consumer::generateCode(),
         ];
 
-        return view('master-data.consumers.create', $data);
+        return view('backend.master-data.consumers.create', $data);
     }
 
     public function store(Request $request)
@@ -75,7 +75,7 @@ class ConsumerController extends Controller
             'consumer' => $consumer->load(['salesTransactions' => fn($q) => $q->latest()->take(10)]),
         ];
 
-        return view('master-data.consumers.show', $data);
+        return view('backend.master-data.consumers.show', $data);
     }
 
     public function edit(Consumer $consumer)
@@ -84,7 +84,7 @@ class ConsumerController extends Controller
             'consumer' => $consumer,
         ];
 
-        return view('master-data.consumers.edit', $data);
+        return view('backend.master-data.consumers.edit', $data);
     }
 
     public function update(Request $request, Consumer $consumer)

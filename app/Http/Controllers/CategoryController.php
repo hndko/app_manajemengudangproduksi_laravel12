@@ -27,12 +27,12 @@ class CategoryController extends Controller
             'filters' => $request->only(['type', 'search']),
         ];
 
-        return view('master-data.categories.index', $data);
+        return view('backend.master-data.categories.index', $data);
     }
 
     public function create()
     {
-        return view('master-data.categories.create');
+        return view('backend.master-data.categories.create');
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class CategoryController extends Controller
             'category' => $category,
         ];
 
-        return view('master-data.categories.edit', $data);
+        return view('backend.master-data.categories.edit', $data);
     }
 
     public function update(Request $request, Category $category)

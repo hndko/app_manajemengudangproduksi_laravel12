@@ -13,7 +13,7 @@ class BackupController extends Controller
     public function index()
     {
         $backups = Backup::with('creator')->latest()->paginate(20);
-        return view('settings.backups.index', compact('backups'));
+        return view('backend.settings.backups.index', compact('backups'));
     }
 
     public function create(Request $request)

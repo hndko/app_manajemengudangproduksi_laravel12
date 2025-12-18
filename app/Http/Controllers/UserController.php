@@ -39,7 +39,7 @@ class UserController extends Controller
             'filters' => $request->only(['search', 'role_id', 'is_active']),
         ];
 
-        return view('settings.users.index', $data);
+        return view('backend.settings.users.index', $data);
     }
 
     public function create()
@@ -48,7 +48,7 @@ class UserController extends Controller
             'roles' => Role::all(),
         ];
 
-        return view('settings.users.create', $data);
+        return view('backend.settings.users.create', $data);
     }
 
     public function store(Request $request)
@@ -83,7 +83,7 @@ class UserController extends Controller
             'user' => $user->load(['role', 'activityLogs' => fn($q) => $q->latest()->take(10)]),
         ];
 
-        return view('settings.users.show', $data);
+        return view('backend.settings.users.show', $data);
     }
 
     public function edit(User $user)
@@ -93,7 +93,7 @@ class UserController extends Controller
             'roles' => Role::all(),
         ];
 
-        return view('settings.users.edit', $data);
+        return view('backend.settings.users.edit', $data);
     }
 
     public function update(Request $request, User $user)

@@ -42,7 +42,7 @@ class ProductController extends Controller
             'filters' => $request->only(['category_id', 'search', 'is_active']),
         ];
 
-        return view('warehouse.products.index', $data);
+        return view('backend.warehouse.products.index', $data);
     }
 
     public function create()
@@ -53,7 +53,7 @@ class ProductController extends Controller
             'priceTypes' => PriceType::where('is_active', true)->get(),
         ];
 
-        return view('warehouse.products.create', $data);
+        return view('backend.warehouse.products.create', $data);
     }
 
     public function store(Request $request)
@@ -110,7 +110,7 @@ class ProductController extends Controller
             'product' => $product->load(['category', 'unit', 'prices.priceType', 'stocks.warehouse']),
         ];
 
-        return view('warehouse.products.show', $data);
+        return view('backend.warehouse.products.show', $data);
     }
 
     public function edit(Product $product)
@@ -122,7 +122,7 @@ class ProductController extends Controller
             'priceTypes' => PriceType::where('is_active', true)->get(),
         ];
 
-        return view('warehouse.products.edit', $data);
+        return view('backend.warehouse.products.edit', $data);
     }
 
     public function update(Request $request, Product $product)
