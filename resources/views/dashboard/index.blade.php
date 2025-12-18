@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
             datasets: [{
                 label: 'Penjualan',
-                data: @json($salesData ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+                data: {!! json_encode($salesData ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) !!},
                 backgroundColor: '#3b9dd4',
                 borderRadius: 6,
             }]
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
             datasets: [{
                 label: 'Produksi',
-                data: @json($productionData ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+                data: {!! json_encode($productionData ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) !!},
                 borderColor: '#10b981',
                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
                 fill: true,
