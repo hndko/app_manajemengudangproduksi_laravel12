@@ -4,7 +4,7 @@
     :class="$store.app.sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
 >
     <!-- Logo -->
-    <div class="p-3 border-b border-white/10">
+    <div class="p-3 border-b border-white/10 flex items-center justify-between">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
             <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" class="h-8 w-auto">
             <div class="hidden lg:block">
@@ -12,6 +12,16 @@
                 <p class="text-[10px] text-neutral-400">Mari Partner</p>
             </div>
         </a>
+        <!-- Close Button (Mobile Only) -->
+        <button
+            @click="$store.app.sidebarOpen = false"
+            class="lg:hidden p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/10 transition-colors"
+            title="Tutup Sidebar"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
     </div>
 
     <!-- Navigation -->
