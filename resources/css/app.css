@@ -1,0 +1,449 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* ========================================
+   Corporate Professional Theme - Mari Partner
+   Warna berdasarkan logo: Hitam #2d2d2d & Biru #3b9dd4
+   ======================================== */
+
+@theme {
+    /* Font */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Primary Colors - Biru dari Logo */
+    --color-primary-50: #e6f4fa;
+    --color-primary-100: #cce9f5;
+    --color-primary-200: #99d3eb;
+    --color-primary-300: #66bde1;
+    --color-primary-400: #3b9dd4;
+    --color-primary-500: #2d8bc4;
+    --color-primary-600: #2476a8;
+    --color-primary-700: #1b5f8a;
+    --color-primary-800: #12486c;
+    --color-primary-900: #0a324e;
+    --color-primary-950: #051f32;
+
+    /* Sidebar - Hitam dari Logo */
+    --color-sidebar: #2d2d2d;
+    --color-sidebar-hover: #3d3d3d;
+    --color-sidebar-active: #1a1a1a;
+
+    /* Neutral / Gray */
+    --color-neutral-50: #f8fafc;
+    --color-neutral-100: #f1f5f9;
+    --color-neutral-200: #e2e8f0;
+    --color-neutral-300: #cbd5e1;
+    --color-neutral-400: #94a3b8;
+    --color-neutral-500: #64748b;
+    --color-neutral-600: #475569;
+    --color-neutral-700: #334155;
+    --color-neutral-800: #1e293b;
+    --color-neutral-900: #0f172a;
+    --color-neutral-950: #020617;
+
+    /* Status Colors */
+    --color-success-50: #ecfdf5;
+    --color-success-100: #d1fae5;
+    --color-success-500: #10b981;
+    --color-success-600: #059669;
+    --color-success-700: #047857;
+
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+
+    --color-danger-50: #fef2f2;
+    --color-danger-100: #fee2e2;
+    --color-danger-500: #ef4444;
+    --color-danger-600: #dc2626;
+    --color-danger-700: #b91c1c;
+
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+
+    /* Dark Mode Colors */
+    --color-dark-bg: #0f172a;
+    --color-dark-surface: #1e293b;
+    --color-dark-card: #334155;
+    --color-dark-border: #475569;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-neutral-50 text-neutral-800 antialiased;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    /* Dark Mode Base */
+    html.dark body {
+        @apply bg-dark-bg text-neutral-100;
+    }
+
+    /* Focus Ring */
+    *:focus-visible {
+        @apply outline-none ring-2 ring-primary-400 ring-offset-2;
+    }
+
+    html.dark *:focus-visible {
+        @apply ring-offset-dark-bg;
+    }
+}
+
+/* ========================================
+   Component Styles
+   ======================================== */
+
+@layer components {
+    /* Sidebar */
+    .sidebar {
+        @apply fixed left-0 top-0 h-screen w-64 bg-sidebar text-white transition-transform duration-300 z-40;
+    }
+
+    .sidebar-item {
+        @apply flex items-center gap-3 px-4 py-3 text-neutral-300 hover:bg-sidebar-hover hover:text-white transition-colors rounded-lg mx-2;
+    }
+
+    .sidebar-item.active {
+        @apply bg-primary-500 text-white;
+    }
+
+    /* Cards */
+    .card {
+        @apply bg-white rounded-xl shadow-sm border border-neutral-200 p-6;
+    }
+
+    html.dark .card {
+        @apply bg-dark-surface border-dark-border;
+    }
+
+    .card-header {
+        @apply flex items-center justify-between mb-4 pb-4 border-b border-neutral-200;
+    }
+
+    html.dark .card-header {
+        @apply border-dark-border;
+    }
+
+    /* Buttons */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .btn-primary {
+        @apply bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-400;
+    }
+
+    .btn-secondary {
+        @apply bg-neutral-100 text-neutral-700 hover:bg-neutral-200 focus:ring-neutral-400;
+    }
+
+    html.dark .btn-secondary {
+        @apply bg-dark-card text-neutral-200 hover:bg-dark-border;
+    }
+
+    .btn-success {
+        @apply bg-success-500 text-white hover:bg-success-600 focus:ring-success-400;
+    }
+
+    .btn-danger {
+        @apply bg-danger-500 text-white hover:bg-danger-600 focus:ring-danger-400;
+    }
+
+    .btn-warning {
+        @apply bg-warning-500 text-white hover:bg-warning-600 focus:ring-warning-400;
+    }
+
+    .btn-outline {
+        @apply border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white;
+    }
+
+    /* Form Inputs */
+    .form-input {
+        @apply w-full px-4 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-800 placeholder-neutral-400 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-colors;
+    }
+
+    html.dark .form-input {
+        @apply bg-dark-card border-dark-border text-neutral-100;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium text-neutral-700 mb-1.5;
+    }
+
+    html.dark .form-label {
+        @apply text-neutral-300;
+    }
+
+    .form-select {
+        @apply form-input pr-10 appearance-none bg-no-repeat;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-size: 1.25rem;
+    }
+
+    /* Tables */
+    .table-container {
+        @apply overflow-x-auto rounded-lg border border-neutral-200;
+    }
+
+    html.dark .table-container {
+        @apply border-dark-border;
+    }
+
+    .table {
+        @apply w-full text-sm;
+    }
+
+    .table thead {
+        @apply bg-neutral-50 border-b border-neutral-200;
+    }
+
+    html.dark .table thead {
+        @apply bg-dark-card border-dark-border;
+    }
+
+    .table th {
+        @apply px-4 py-3 text-left font-semibold text-neutral-700;
+    }
+
+    html.dark .table th {
+        @apply text-neutral-300;
+    }
+
+    .table td {
+        @apply px-4 py-3 border-b border-neutral-100;
+    }
+
+    html.dark .table td {
+        @apply border-dark-border;
+    }
+
+    .table tbody tr {
+        @apply bg-white hover:bg-neutral-50 transition-colors;
+    }
+
+    html.dark .table tbody tr {
+        @apply bg-dark-surface hover:bg-dark-card;
+    }
+
+    /* Badges */
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+
+    .badge-primary {
+        @apply bg-primary-100 text-primary-700;
+    }
+
+    .badge-success {
+        @apply bg-success-100 text-success-700;
+    }
+
+    .badge-warning {
+        @apply bg-warning-100 text-warning-700;
+    }
+
+    .badge-danger {
+        @apply bg-danger-100 text-danger-700;
+    }
+
+    .badge-info {
+        @apply bg-info-100 text-info-700;
+    }
+
+    /* Stats Card */
+    .stat-card {
+        @apply card flex items-center gap-4;
+    }
+
+    .stat-icon {
+        @apply w-12 h-12 rounded-xl flex items-center justify-center text-white;
+    }
+
+    .stat-value {
+        @apply text-2xl font-bold text-neutral-800;
+    }
+
+    html.dark .stat-value {
+        @apply text-white;
+    }
+
+    .stat-label {
+        @apply text-sm text-neutral-500;
+    }
+
+    /* Alerts */
+    .alert {
+        @apply p-4 rounded-lg flex items-start gap-3;
+    }
+
+    .alert-success {
+        @apply bg-success-50 text-success-700 border border-success-200;
+    }
+
+    .alert-warning {
+        @apply bg-warning-50 text-warning-700 border border-warning-200;
+    }
+
+    .alert-danger {
+        @apply bg-danger-50 text-danger-700 border border-danger-200;
+    }
+
+    .alert-info {
+        @apply bg-info-50 text-info-700 border border-info-200;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+        @apply fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4;
+    }
+
+    .modal {
+        @apply bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-auto;
+    }
+
+    html.dark .modal {
+        @apply bg-dark-surface;
+    }
+
+    .modal-header {
+        @apply flex items-center justify-between p-4 border-b border-neutral-200;
+    }
+
+    html.dark .modal-header {
+        @apply border-dark-border;
+    }
+
+    .modal-body {
+        @apply p-4;
+    }
+
+    .modal-footer {
+        @apply flex items-center justify-end gap-3 p-4 border-t border-neutral-200;
+    }
+
+    html.dark .modal-footer {
+        @apply border-dark-border;
+    }
+
+    /* Dropdown */
+    .dropdown {
+        @apply relative;
+    }
+
+    .dropdown-menu {
+        @apply absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-1 z-50;
+    }
+
+    html.dark .dropdown-menu {
+        @apply bg-dark-surface border-dark-border;
+    }
+
+    .dropdown-item {
+        @apply block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors;
+    }
+
+    html.dark .dropdown-item {
+        @apply text-neutral-300 hover:bg-dark-card;
+    }
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+@layer utilities {
+    /* Animation utilities */
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    .animate-slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .animate-scale-in {
+        animation: scaleIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Scrollbar styling */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: theme('colors.neutral.300') transparent;
+    }
+
+    html.dark .scrollbar-thin {
+        scrollbar-color: theme('colors.neutral.600') transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: theme('colors.neutral.300');
+        border-radius: 3px;
+    }
+
+    html.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: theme('colors.neutral.600');
+    }
+
+    /* Print styles */
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+
+        .print-only {
+            display: block !important;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #e5e7eb !important;
+        }
+    }
+}
