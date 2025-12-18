@@ -12,7 +12,7 @@ class SettingController extends Controller
     public function index()
     {
         $settings = SiteSetting::all()->groupBy('group');
-        return view('settings.index', compact('settings'));
+        return view('backend.settings.index', compact('settings'));
     }
 
     public function update(Request $request)

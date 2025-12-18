@@ -22,7 +22,7 @@ class ProductionController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('manufacturing.productions.index', compact('productions'));
+        return view('backend.manufacturing.productions.index', compact('productions'));
     }
 
     public function create()
@@ -31,7 +31,7 @@ class ProductionController extends Controller
         $materials = Material::active()->with('unit')->get();
         $products = Product::active()->with('unit')->get();
         $warehouses = Warehouse::active()->get();
-        return view('manufacturing.productions.create', compact('teams', 'materials', 'products', 'warehouses'));
+        return view('backend.manufacturing.productions.create', compact('teams', 'materials', 'products', 'warehouses'));
     }
 
     public function store(Request $request)
@@ -86,7 +86,7 @@ class ProductionController extends Controller
     public function show(Production $production)
     {
         $production->load(['productionTeam', 'creator', 'materials.material.unit', 'products.product.unit']);
-        return view('manufacturing.productions.show', compact('production'));
+        return view('backend.manufacturing.productions.show', compact('production'));
     }
 
     public function edit(Production $production)
@@ -101,7 +101,7 @@ class ProductionController extends Controller
         $warehouses = Warehouse::active()->get();
         $production->load(['materials', 'products']);
 
-        return view('manufacturing.productions.edit', compact('production', 'teams', 'materials', 'products', 'warehouses'));
+        return view('backend.manufacturing.productions.edit', compact('production', 'teams', 'materials', 'products', 'warehouses'));
     }
 
     public function update(Request $request, Production $production)

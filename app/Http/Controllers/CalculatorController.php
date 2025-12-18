@@ -11,7 +11,7 @@ class CalculatorController extends Controller
      */
     public function pph21()
     {
-        return view('calculator.pph21');
+        return view('backend.calculator.pph21');
     }
 
     /**
@@ -98,7 +98,7 @@ class CalculatorController extends Controller
             'effective_rate' => $grossIncome > 0 ? ($pph21Monthly / $grossIncome) * 100 : 0,
         ];
 
-        return view('calculator.pph21', compact('result'))
+        return view('backend.calculator.pph21', compact('result'))
             ->withInput($request->all());
     }
 }

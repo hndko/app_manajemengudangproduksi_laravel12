@@ -15,13 +15,13 @@ class ChartOfAccountController extends Controller
             ->orderBy('code')
             ->get();
 
-        return view('accounting.chart-of-accounts.index', compact('accounts'));
+        return view('backend.accounting.chart-of-accounts.index', compact('accounts'));
     }
 
     public function create()
     {
         $parentAccounts = ChartOfAccount::orderBy('code')->get();
-        return view('accounting.chart-of-accounts.create', compact('parentAccounts'));
+        return view('backend.accounting.chart-of-accounts.create', compact('parentAccounts'));
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class ChartOfAccountController extends Controller
     public function show(ChartOfAccount $chartOfAccount)
     {
         $chartOfAccount->load('journalDetails.journalEntry');
-        return view('accounting.chart-of-accounts.show', compact('chartOfAccount'));
+        return view('backend.accounting.chart-of-accounts.show', compact('chartOfAccount'));
     }
 
     public function edit(ChartOfAccount $chartOfAccount)
@@ -54,7 +54,7 @@ class ChartOfAccountController extends Controller
         $parentAccounts = ChartOfAccount::where('id', '!=', $chartOfAccount->id)
             ->orderBy('code')
             ->get();
-        return view('accounting.chart-of-accounts.edit', compact('chartOfAccount', 'parentAccounts'));
+        return view('backend.accounting.chart-of-accounts.edit', compact('chartOfAccount', 'parentAccounts'));
     }
 
     public function update(Request $request, ChartOfAccount $chartOfAccount)

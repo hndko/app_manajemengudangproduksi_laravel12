@@ -11,13 +11,13 @@ class ProductionTeamController extends Controller
     public function index()
     {
         $teams = ProductionTeam::with('leader')->latest()->paginate(20);
-        return view('manufacturing.production-teams.index', compact('teams'));
+        return view('backend.manufacturing.production-teams.index', compact('teams'));
     }
 
     public function create()
     {
         $users = User::where('is_active', true)->get();
-        return view('manufacturing.production-teams.create', compact('users'));
+        return view('backend.manufacturing.production-teams.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class ProductionTeamController extends Controller
     public function edit(ProductionTeam $productionTeam)
     {
         $users = User::where('is_active', true)->get();
-        return view('manufacturing.production-teams.edit', compact('productionTeam', 'users'));
+        return view('backend.manufacturing.production-teams.edit', compact('productionTeam', 'users'));
     }
 
     public function update(Request $request, ProductionTeam $productionTeam)

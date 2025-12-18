@@ -21,7 +21,7 @@ class JournalController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('accounting.journals.index', compact('journals'));
+        return view('backend.accounting.journals.index', compact('journals'));
     }
 
     public function create()
@@ -29,7 +29,7 @@ class JournalController extends Controller
         $accounts = ChartOfAccount::active()->orderBy('code')->get();
         $fiscalPeriod = FiscalPeriod::current();
 
-        return view('accounting.journals.create', compact('accounts', 'fiscalPeriod'));
+        return view('backend.accounting.journals.create', compact('accounts', 'fiscalPeriod'));
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class JournalController extends Controller
     public function show(JournalEntry $journal)
     {
         $journal->load(['details.account', 'creator', 'poster', 'fiscalPeriod']);
-        return view('accounting.journals.show', compact('journal'));
+        return view('backend.accounting.journals.show', compact('journal'));
     }
 
     public function edit(JournalEntry $journal)
@@ -90,7 +90,7 @@ class JournalController extends Controller
         $journal->load('details');
         $accounts = ChartOfAccount::active()->orderBy('code')->get();
 
-        return view('accounting.journals.edit', compact('journal', 'accounts'));
+        return view('backend.accounting.journals.edit', compact('journal', 'accounts'));
     }
 
     public function update(Request $request, JournalEntry $journal)

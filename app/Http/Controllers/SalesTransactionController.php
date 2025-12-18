@@ -23,7 +23,7 @@ class SalesTransactionController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('transactions.sales.index', compact('sales'));
+        return view('backend.transactions.sales.index', compact('sales'));
     }
 
     public function create()
@@ -37,7 +37,7 @@ class SalesTransactionController extends Controller
             ->whereDoesntHave('salesTransaction')
             ->get();
 
-        return view('transactions.sales.create', compact('consumers', 'warehouses', 'priceTypes', 'installmentTypes', 'products', 'deliveryNotes'));
+        return view('backend.transactions.sales.create', compact('consumers', 'warehouses', 'priceTypes', 'installmentTypes', 'products', 'deliveryNotes'));
     }
 
     public function store(Request $request)
@@ -99,7 +99,7 @@ class SalesTransactionController extends Controller
     public function show(SalesTransaction $sale)
     {
         $sale->load(['consumer', 'warehouse', 'priceType', 'installmentType', 'creator', 'items.product.unit', 'payments.creator', 'deliveryNote']);
-        return view('transactions.sales.show', compact('sale'));
+        return view('backend.transactions.sales.show', compact('sale'));
     }
 
     public function edit(SalesTransaction $sale)
@@ -115,7 +115,7 @@ class SalesTransactionController extends Controller
         $products = Product::active()->with(['unit', 'prices'])->get();
         $sale->load('items');
 
-        return view('transactions.sales.edit', compact('sale', 'consumers', 'warehouses', 'priceTypes', 'installmentTypes', 'products'));
+        return view('backend.transactions.sales.edit', compact('sale', 'consumers', 'warehouses', 'priceTypes', 'installmentTypes', 'products'));
     }
 
     public function update(Request $request, SalesTransaction $sale)

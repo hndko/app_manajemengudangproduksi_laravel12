@@ -21,7 +21,7 @@ class ReturnsController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('expedition.returns.index', compact('returns'));
+        return view('backend.expedition.returns.index', compact('returns'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class ReturnsController extends Controller
         $warehouses = Warehouse::active()->get();
         $deliveryNotes = DeliveryNote::where('status', 'delivered')->get();
         $products = Product::active()->with('unit')->get();
-        return view('expedition.returns.create', compact('consumers', 'warehouses', 'deliveryNotes', 'products'));
+        return view('backend.expedition.returns.create', compact('consumers', 'warehouses', 'deliveryNotes', 'products'));
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class ReturnsController extends Controller
     public function show(Returns $return)
     {
         $return->load(['consumer', 'warehouse', 'creator', 'approver', 'deliveryNote', 'items.product.unit']);
-        return view('expedition.returns.show', compact('return'));
+        return view('backend.expedition.returns.show', compact('return'));
     }
 
     public function edit(Returns $return)
@@ -92,7 +92,7 @@ class ReturnsController extends Controller
         $products = Product::active()->with('unit')->get();
         $return->load('items');
 
-        return view('expedition.returns.edit', compact('return', 'consumers', 'warehouses', 'products'));
+        return view('backend.expedition.returns.edit', compact('return', 'consumers', 'warehouses', 'products'));
     }
 
     public function update(Request $request, Returns $return)

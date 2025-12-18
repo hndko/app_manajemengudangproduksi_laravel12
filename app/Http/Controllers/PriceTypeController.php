@@ -10,12 +10,12 @@ class PriceTypeController extends Controller
     public function index()
     {
         $priceTypes = PriceType::latest()->paginate(20);
-        return view('master-data.price-types.index', compact('priceTypes'));
+        return view('backend.master-data.price-types.index', compact('priceTypes'));
     }
 
     public function create()
     {
-        return view('master-data.price-types.create');
+        return view('backend.master-data.price-types.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class PriceTypeController extends Controller
 
     public function edit(PriceType $priceType)
     {
-        return view('master-data.price-types.edit', compact('priceType'));
+        return view('backend.master-data.price-types.edit', compact('priceType'));
     }
 
     public function update(Request $request, PriceType $priceType)

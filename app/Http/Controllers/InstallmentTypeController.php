@@ -10,12 +10,12 @@ class InstallmentTypeController extends Controller
     public function index()
     {
         $installmentTypes = InstallmentType::latest()->paginate(20);
-        return view('master-data.installment-types.index', compact('installmentTypes'));
+        return view('backend.master-data.installment-types.index', compact('installmentTypes'));
     }
 
     public function create()
     {
-        return view('master-data.installment-types.create');
+        return view('backend.master-data.installment-types.create');
     }
 
     public function store(Request $request)
@@ -32,7 +32,7 @@ class InstallmentTypeController extends Controller
 
     public function edit(InstallmentType $installmentType)
     {
-        return view('master-data.installment-types.edit', compact('installmentType'));
+        return view('backend.master-data.installment-types.edit', compact('installmentType'));
     }
 
     public function update(Request $request, InstallmentType $installmentType)

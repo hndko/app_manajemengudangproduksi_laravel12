@@ -12,6 +12,6 @@ class LedgerController extends Controller
             if ($request->start_date) $q->whereDate('created_at', '>=', $request->start_date);
             if ($request->end_date) $q->whereDate('created_at', '<=', $request->end_date);
         }])->orderBy('code')->get();
-        return view('accounting.ledger.index', compact('accounts'));
+        return view('backend.accounting.ledger.index', compact('accounts'));
     }
 }

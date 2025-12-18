@@ -12,7 +12,7 @@ class ProfileController extends Controller
 {
     public function edit()
     {
-        return view('profile.edit', ['user' => auth()->user()]);
+        return view('backend.profile.edit', ['user' => auth()->user()]);
     }
 
     public function update(Request $request)

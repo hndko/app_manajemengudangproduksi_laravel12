@@ -20,7 +20,7 @@ class DeliveryNoteController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('expedition.delivery-notes.index', compact('deliveryNotes'));
+        return view('backend.expedition.delivery-notes.index', compact('deliveryNotes'));
     }
 
     public function create()
@@ -28,7 +28,7 @@ class DeliveryNoteController extends Controller
         $consumers = Consumer::active()->get();
         $warehouses = Warehouse::active()->get();
         $products = Product::active()->with('unit')->get();
-        return view('expedition.delivery-notes.create', compact('consumers', 'warehouses', 'products'));
+        return view('backend.expedition.delivery-notes.create', compact('consumers', 'warehouses', 'products'));
     }
 
     public function store(Request $request)
@@ -75,7 +75,7 @@ class DeliveryNoteController extends Controller
     public function show(DeliveryNote $deliveryNote)
     {
         $deliveryNote->load(['consumer', 'warehouse', 'creator', 'items.product.unit']);
-        return view('expedition.delivery-notes.show', compact('deliveryNote'));
+        return view('backend.expedition.delivery-notes.show', compact('deliveryNote'));
     }
 
     public function edit(DeliveryNote $deliveryNote)
@@ -89,7 +89,7 @@ class DeliveryNoteController extends Controller
         $products = Product::active()->with('unit')->get();
         $deliveryNote->load('items');
 
-        return view('expedition.delivery-notes.edit', compact('deliveryNote', 'consumers', 'warehouses', 'products'));
+        return view('backend.expedition.delivery-notes.edit', compact('deliveryNote', 'consumers', 'warehouses', 'products'));
     }
 
     public function update(Request $request, DeliveryNote $deliveryNote)

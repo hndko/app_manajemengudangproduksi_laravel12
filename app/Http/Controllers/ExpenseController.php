@@ -16,13 +16,13 @@ class ExpenseController extends Controller
             ->latest('date')
             ->paginate(20);
 
-        return view('transactions.expenses.index', compact('expenses'));
+        return view('backend.transactions.expenses.index', compact('expenses'));
     }
 
     public function create()
     {
         $accounts = ChartOfAccount::ofType('beban')->active()->orderBy('code')->get();
-        return view('transactions.expenses.create', compact('accounts'));
+        return view('backend.transactions.expenses.create', compact('accounts'));
     }
 
     public function store(Request $request)
@@ -52,7 +52,7 @@ class ExpenseController extends Controller
     public function show(Expense $expense)
     {
         $expense->load(['account', 'creator', 'approver']);
-        return view('transactions.expenses.show', compact('expense'));
+        return view('backend.transactions.expenses.show', compact('expense'));
     }
 
     public function edit(Expense $expense)
@@ -62,7 +62,7 @@ class ExpenseController extends Controller
         }
 
         $accounts = ChartOfAccount::ofType('beban')->active()->orderBy('code')->get();
-        return view('transactions.expenses.edit', compact('expense', 'accounts'));
+        return view('backend.transactions.expenses.edit', compact('expense', 'accounts'));
     }
 
     public function update(Request $request, Expense $expense)
