@@ -6,7 +6,7 @@
     <!-- Logo -->
     <div class="p-3 border-b border-white/10">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-            <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-8 w-auto">
+            <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" class="h-8 w-auto">
             <div class="hidden lg:block">
                 <h1 class="text-sm font-bold text-white leading-tight">Gudang Produksi</h1>
                 <p class="text-[10px] text-neutral-400">Mari Partner</p>

@@ -6,22 +6,49 @@ use App\Models\ActivityLog;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('role')->latest()->paginate(20);
-        return view('settings.users.index', compact('users'));
+        $query = User::with('role');
+
+        // Filter by search
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Filter by role
+        if ($request->filled('role_id')) {
+            $query->where('role_id', $request->role_id);
+        }
+
+        // Filter by status
+        if ($request->filled('is_active')) {
+            $query->where('is_active', $request->is_active);
+        }
+
+        $data = [
+            'users' => $query->latest()->paginate(15)->withQueryString(),
+            'roles' => Role::all(),
+            'filters' => $request->only(['search', 'role_id', 'is_active']),
+        ];
+
+        return view('settings.users.index', $data);
     }
 
     public function create()
     {
-        $roles = Role::all();
-        return view('settings.users.create', compact('roles'));
+        $data = [
+            'roles' => Role::all(),
+        ];
+
+        return view('settings.users.create', $data);
     }
 
     public function store(Request $request)
@@ -29,84 +56,97 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'password' => 'required|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
             'phone' => 'nullable|max:20',
             'avatar' => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->except(['password', 'password_confirmation', 'avatar']);
-        $data['password'] = Hash::make($request->password);
-        $data['is_active'] = $request->boolean('is_active');
+        $userData = $request->only(['name', 'email', 'password', 'role_id', 'phone']);
+        $userData['is_active'] = $request->boolean('is_active', true);
 
+        // Handle avatar upload
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $userData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        $user = User::create($data);
+        $user = User::create($userData);
         ActivityLog::log('create', "Menambah user {$user->name}", $user);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('users.index')
+            ->with('success', 'User berhasil ditambahkan');
     }
 
     public function show(User $user)
     {
-        $user->load(['role', 'activityLogs' => fn($q) => $q->latest()->take(10)]);
-        return view('settings.users.show', compact('user'));
+        $data = [
+            'user' => $user->load(['role', 'activityLogs' => fn($q) => $q->latest()->take(10)]),
+        ];
+
+        return view('settings.users.show', $data);
     }
 
     public function edit(User $user)
     {
-        $roles = Role::all();
-        return view('settings.users.edit', compact('user', 'roles'));
+        $data = [
+            'user' => $user,
+            'roles' => Role::all(),
+        ];
+
+        return view('settings.users.edit', $data);
     }
 
     public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'password' => 'nullable|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
             'phone' => 'nullable|max:20',
             'avatar' => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->only(['name', 'email', 'role_id', 'phone']);
-        $data['is_active'] = $request->boolean('is_active');
+        $userData = $request->only(['name', 'email', 'role_id', 'phone']);
+        $userData['is_active'] = $request->boolean('is_active', true);
 
+        // Handle password
         if ($request->filled('password')) {
-            $request->validate([
-                'password' => ['confirmed', Password::min(8)],
-            ]);
-            $data['password'] = Hash::make($request->password);
+            $userData['password'] = $request->password;
         }
 
+        // Handle avatar upload
         if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
+            // Delete old avatar
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                 Storage::disk('public')->delete($user->avatar);
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $userData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        $user->update($data);
+        $user->update($userData);
         ActivityLog::log('update', "Mengubah user {$user->name}", $user);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui');
+        return redirect()->route('users.index')
+            ->with('success', 'User berhasil diperbarui');
     }
 
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {
-            return back()->with('error', 'Tidak dapat menghapus akun sendiri');
+            return redirect()->route('users.index')
+                ->with('error', 'Tidak dapat menghapus akun sendiri');
         }
 
-        if ($user->avatar) {
+        // Delete avatar
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
             Storage::disk('public')->delete($user->avatar);
         }
 
         ActivityLog::log('delete', "Menghapus user {$user->name}", $user);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('users.index')
+            ->with('success', 'User berhasil dihapus');
     }
 }

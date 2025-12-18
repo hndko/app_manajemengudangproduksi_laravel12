@@ -27,7 +27,7 @@
     <div class="w-full max-w-sm" x-data="{ showPassword: false }">
         <!-- Logo Section -->
         <div class="text-center mb-6">
-            <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-12 mx-auto mb-3">
+            <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" class="h-12 mx-auto mb-3">
             <h1 class="text-xl font-bold text-white">Gudang Produksi</h1>
             <p class="text-xs text-neutral-400 mt-1">Mari Partner</p>
         </div>
