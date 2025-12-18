@@ -5,8 +5,8 @@
 @section('subheader', 'Pilih jenis laporan yang ingin dilihat')
 
 @section('content')
-<div class="max-w-2xl mx-auto">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="max-w-3xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
         <a href="{{ route('reports.balance-sheet') }}" class="card hover:shadow-lg transition-all group">
             <div class="text-center py-4">
@@ -17,7 +17,7 @@
                 </div>
                 <h3 class="text-lg font-semibold text-white mb-1">Neraca</h3>
                 <p class="text-sm text-neutral-400">Balance Sheet</p>
-                <p class="text-xs text-neutral-500 mt-2">Aset, Liabilitas, dan Ekuitas</p>
+                <p class="text-xs text-neutral-500 mt-2">Aset, Liabilitas, Ekuitas</p>
             </div>
         </a>
 
@@ -30,7 +30,20 @@
                 </div>
                 <h3 class="text-lg font-semibold text-white mb-1">Laba Rugi</h3>
                 <p class="text-sm text-neutral-400">Income Statement</p>
-                <p class="text-xs text-neutral-500 mt-2">Pendapatan dan Beban</p>
+                <p class="text-xs text-neutral-500 mt-2">Pendapatan, Beban</p>
+            </div>
+        </a>
+
+        <a href="{{ route('reports.cash-flow') }}" class="card hover:shadow-lg transition-all group">
+            <div class="text-center py-4">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-warning-500 to-warning-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-1">Arus Kas</h3>
+                <p class="text-sm text-neutral-400">Cash Flow Statement</p>
+                <p class="text-xs text-neutral-500 mt-2">Operasi, Investasi, Pendanaan</p>
             </div>
         </a>
 

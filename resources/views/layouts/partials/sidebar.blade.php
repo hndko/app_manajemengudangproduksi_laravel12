@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <aside
-    class="sidebar scrollbar-thin"
+    class="sidebar scrollbar-thin overflow-hidden"
     :class="$store.app.sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
 >
     <!-- Logo -->

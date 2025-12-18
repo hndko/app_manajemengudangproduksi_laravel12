@@ -44,7 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::get('ledger/{account}', [\App\Http\Controllers\LedgerController::class, 'show'])->name('ledger.show');
     Route::get('reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/balance-sheet', [\App\Http\Controllers\ReportController::class, 'balanceSheet'])->name('reports.balance-sheet');
+    Route::get('reports/balance-sheet/export', [\App\Http\Controllers\ReportController::class, 'exportBalanceSheet'])->name('reports.balance-sheet.export');
     Route::get('reports/income-statement', [\App\Http\Controllers\ReportController::class, 'incomeStatement'])->name('reports.income-statement');
+    Route::get('reports/income-statement/export', [\App\Http\Controllers\ReportController::class, 'exportIncomeStatement'])->name('reports.income-statement.export');
+    Route::get('reports/cash-flow', [\App\Http\Controllers\ReportController::class, 'cashFlow'])->name('reports.cash-flow');
+    Route::get('reports/cash-flow/export', [\App\Http\Controllers\ReportController::class, 'exportCashFlow'])->name('reports.cash-flow.export');
 
     // Master Data
     Route::resource('consumers', \App\Http\Controllers\ConsumerController::class);
