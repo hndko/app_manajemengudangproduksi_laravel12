@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('journals', \App\Http\Controllers\JournalController::class);
     Route::post('journals/{journal}/post', [\App\Http\Controllers\JournalController::class, 'post'])->name('journals.post');
     Route::get('ledger', [\App\Http\Controllers\LedgerController::class, 'index'])->name('ledger.index');
+    Route::get('ledger/export/excel', [\App\Http\Controllers\LedgerController::class, 'exportExcel'])->name('ledger.export.excel');
+    Route::get('ledger/export/pdf', [\App\Http\Controllers\LedgerController::class, 'exportPdf'])->name('ledger.export.pdf');
+    Route::get('ledger/{account}', [\App\Http\Controllers\LedgerController::class, 'show'])->name('ledger.show');
     Route::get('reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/balance-sheet', [\App\Http\Controllers\ReportController::class, 'balanceSheet'])->name('reports.balance-sheet');
     Route::get('reports/income-statement', [\App\Http\Controllers\ReportController::class, 'incomeStatement'])->name('reports.income-statement');
