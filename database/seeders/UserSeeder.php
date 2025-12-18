@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -20,11 +19,11 @@ class UserSeeder extends Seeder
 
         // Admin Akuntansi
         User::updateOrCreate(
-            ['email' => 'admin@maripartner.com'],
+            ['email' => 'admin@example.com'],
             [
                 'role_id' => $adminRole->id,
                 'name' => 'Administrator',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'phone' => '081234567890',
                 'is_active' => true,
             ]
@@ -32,11 +31,11 @@ class UserSeeder extends Seeder
 
         // Warehouse Staff
         User::updateOrCreate(
-            ['email' => 'warehouse@maripartner.com'],
+            ['email' => 'warehouse@example.com'],
             [
                 'role_id' => $warehouseRole->id,
                 'name' => 'Staff Gudang',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'phone' => '081234567891',
                 'is_active' => true,
             ]
@@ -44,11 +43,11 @@ class UserSeeder extends Seeder
 
         // Ekspedisi Staff
         User::updateOrCreate(
-            ['email' => 'ekspedisi@maripartner.com'],
+            ['email' => 'ekspedisi@example.com'],
             [
                 'role_id' => $ekspedisiRole->id,
                 'name' => 'Staff Ekspedisi',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'phone' => '081234567892',
                 'is_active' => true,
             ]
