@@ -191,7 +191,7 @@
     </nav>
 
     <!-- User Info -->
-    <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10 bg-sidebar">
+    <div class="absolute bottom-0 left-0 right-0 h-[52px] px-3 border-t border-white/10 bg-sidebar flex items-center">
         <div class="flex items-center gap-2">
             <div class="avatar">
                 {{ auth()->user()->initials }}

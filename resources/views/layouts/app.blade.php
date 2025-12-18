@@ -44,7 +44,7 @@
         @include('layouts.partials.navbar')
 
         <!-- Page Content -->
-        <main class="p-3 lg:p-5 min-h-[calc(100vh-120px)]">
+        <main class="p-3 lg:p-5 min-h-[calc(100vh-60px)]">
             <!-- Breadcrumb -->
             @hasSection('breadcrumb')
                 <nav class="mb-3 text-xs">
@@ -109,9 +109,7 @@
             <!-- Main Content -->
             @yield('content')
         </main>
-
-        <!-- Footer -->
-        @include('layouts.partials.footer')
+    </div>
     </div>
 
     <script>
