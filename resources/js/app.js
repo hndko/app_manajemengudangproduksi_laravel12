@@ -1,213 +1,247 @@
-import './bootstrap';
 import Alpine from 'alpinejs';
 import Chart from 'chart.js/auto';
 import Swal from 'sweetalert2';
 
 // Initialize Alpine.js
 window.Alpine = Alpine;
+
+// Global Alpine Store
+Alpine.store('app', {
+    darkMode: localStorage.getItem('darkMode') === 'true',
+    sidebarOpen: window.innerWidth >= 1024,
+
+    init() {
+        this.applyDarkMode();
+
+        // Listen for resize
+        window.addEventListener('resize', () => {
+            this.sidebarOpen = window.innerWidth >= 1024;
+        });
+    },
+
+    toggleDarkMode() {
+        this.darkMode = !this.darkMode;
+        localStorage.setItem('darkMode', this.darkMode);
+        this.applyDarkMode();
+    },
+
+    applyDarkMode() {
+        document.documentElement.classList.toggle('dark', this.darkMode);
+    },
+
+    toggleSidebar() {
+        this.sidebarOpen = !this.sidebarOpen;
+    },
+
+    closeSidebar() {
+        if (window.innerWidth < 1024) {
+            this.sidebarOpen = false;
+        }
+    }
+});
+
+// Alpine Components
+Alpine.data('dropdown', () => ({
+    open: false,
+    toggle() {
+        this.open = !this.open;
+    },
+    close() {
+        this.open = false;
+    }
+}));
+
+Alpine.data('modal', () => ({
+    open: false,
+    show() {
+        this.open = true;
+        document.body.style.overflow = 'hidden';
+    },
+    hide() {
+        this.open = false;
+        document.body.style.overflow = '';
+    }
+}));
+
+Alpine.data('tabs', (defaultTab = 0) => ({
+    activeTab: defaultTab,
+    setTab(index) {
+        this.activeTab = index;
+    }
+}));
+
+Alpine.data('accordion', () => ({
+    active: null,
+    toggle(index) {
+        this.active = this.active === index ? null : index;
+    }
+}));
+
+// Start Alpine
 Alpine.start();
 
-// Make Chart.js available globally
+// Make Chart.js and Swal globally available
 window.Chart = Chart;
+window.Swal = Swal;
 
-// Configure SweetAlert2 with custom theme
-window.Swal = Swal.mixin({
-    customClass: {
-        confirmButton: 'btn btn-primary mx-1',
-        cancelButton: 'btn btn-secondary mx-1',
-        denyButton: 'btn btn-danger mx-1',
+// Configure Chart.js defaults
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#64748b';
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.padding = 16;
+Chart.defaults.elements.bar.borderRadius = 6;
+Chart.defaults.elements.line.tension = 0.4;
+
+// Global Helper Functions
+window.helpers = {
+    formatNumber(number) {
+        return new Intl.NumberFormat('id-ID').format(number);
     },
-    buttonsStyling: false,
-});
 
-// Toast notification helper
-window.Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-});
+    formatCurrency(number) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(number);
+    },
 
-// Dark mode toggle functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Check for saved theme preference or default to system preference
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    formatDate(date, format = 'short') {
+        const options = format === 'long'
+            ? { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+            : { year: 'numeric', month: '2-digit', day: '2-digit' };
+        return new Date(date).toLocaleDateString('id-ID', options);
+    },
 
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        document.documentElement.classList.add('dark');
-    }
-
-    // Theme toggle button handler
-    window.toggleDarkMode = function() {
-        const html = document.documentElement;
-        html.classList.toggle('dark');
-
-        const isDark = html.classList.contains('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-        // Dispatch custom event for components that need to react to theme change
-        window.dispatchEvent(new CustomEvent('theme-changed', { detail: { dark: isDark } }));
-    };
-});
-
-// Sidebar toggle for mobile
-window.toggleSidebar = function() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-
-    if (sidebar) {
-        sidebar.classList.toggle('-translate-x-full');
-    }
-    if (overlay) {
-        overlay.classList.toggle('hidden');
+    formatTime(date) {
+        return new Date(date).toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     }
 };
 
-// Confirmation dialog helper
-window.confirmAction = function(options = {}) {
-    const defaults = {
-        title: 'Apakah Anda yakin?',
-        text: 'Tindakan ini tidak dapat dibatalkan!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya, lanjutkan!',
-        cancelButtonText: 'Batal',
-    };
+// SweetAlert2 Helpers
+window.toast = {
+    success(message) {
+        Swal.fire({
+            icon: 'success',
+            title: message,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'text-sm rounded-lg'
+            }
+        });
+    },
 
-    return Swal.fire({ ...defaults, ...options });
+    error(message) {
+        Swal.fire({
+            icon: 'error',
+            title: message,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'text-sm rounded-lg'
+            }
+        });
+    },
+
+    info(message) {
+        Swal.fire({
+            icon: 'info',
+            title: message,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'text-sm rounded-lg'
+            }
+        });
+    }
+};
+
+window.confirm = async (options = {}) => {
+    const result = await Swal.fire({
+        title: options.title || 'Konfirmasi',
+        text: options.text || 'Apakah Anda yakin?',
+        icon: options.icon || 'question',
+        showCancelButton: true,
+        confirmButtonText: options.confirmText || 'Ya',
+        cancelButtonText: options.cancelText || 'Batal',
+        confirmButtonColor: '#3b9dd4',
+        cancelButtonColor: '#64748b',
+        customClass: {
+            popup: 'rounded-xl',
+            confirmButton: 'text-sm px-4 py-2',
+            cancelButton: 'text-sm px-4 py-2'
+        }
+    });
+    return result.isConfirmed;
 };
 
 // Delete confirmation
-window.confirmDelete = function(formId) {
-    confirmAction({
+window.confirmDelete = async (form) => {
+    const confirmed = await window.confirm({
         title: 'Hapus Data?',
         text: 'Data yang dihapus tidak dapat dikembalikan!',
         icon: 'warning',
-        confirmButtonText: 'Ya, hapus!',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById(formId).submit();
-        }
+        confirmText: 'Ya, Hapus!'
     });
-};
 
-// Number formatting helper
-window.formatNumber = function(number, decimals = 0) {
-    return new Intl.NumberFormat('id-ID', {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-    }).format(number);
-};
-
-// Currency formatting helper
-window.formatCurrency = function(number) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(number);
-};
-
-// Date formatting helper
-window.formatDate = function(date, format = 'long') {
-    const d = new Date(date);
-
-    if (format === 'short') {
-        return d.toLocaleDateString('id-ID');
-    } else if (format === 'long') {
-        return d.toLocaleDateString('id-ID', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
-    } else if (format === 'datetime') {
-        return d.toLocaleString('id-ID');
+    if (confirmed) {
+        form.submit();
     }
-
-    return d.toLocaleDateString('id-ID');
 };
 
-// Print functionality
-window.printElement = function(elementId) {
+// Print function
+window.printElement = (elementId) => {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    const printWindow = window.open('', '_blank');
-    const styles = Array.from(document.styleSheets)
-        .map(styleSheet => {
-            try {
-                return Array.from(styleSheet.cssRules)
-                    .map(rule => rule.cssText)
-                    .join('\n');
-            } catch (e) {
-                return '';
-            }
-        })
-        .join('\n');
-
+    const printWindow = window.open('', '', 'width=800,height=600');
     printWindow.document.write(`
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Print - Mari Partner</title>
-            <style>${styles}</style>
+            <title>Print</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <style>
-                @media print {
-                    body {
-                        padding: 20px;
-                        background: white !important;
-                        color: black !important;
-                    }
-                    .no-print { display: none !important; }
-                }
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { font-family: 'Inter', sans-serif; padding: 20px; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background: #f5f5f5; font-weight: 600; }
+                h1, h2, h3 { margin-bottom: 10px; }
             </style>
         </head>
-        <body>
-            ${element.innerHTML}
-        </body>
+        <body>${element.innerHTML}</body>
         </html>
     `);
-
     printWindow.document.close();
     printWindow.focus();
-
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-    }, 250);
+    printWindow.print();
+    printWindow.close();
 };
 
-// Chart.js default configuration
-Chart.defaults.color = '#64748b';
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.plugins.legend.labels.usePointStyle = true;
-Chart.defaults.plugins.tooltip.backgroundColor = '#1e293b';
-Chart.defaults.plugins.tooltip.titleColor = '#f1f5f9';
-Chart.defaults.plugins.tooltip.bodyColor = '#f1f5f9';
-Chart.defaults.plugins.tooltip.borderColor = '#334155';
-Chart.defaults.plugins.tooltip.borderWidth = 1;
-Chart.defaults.plugins.tooltip.cornerRadius = 8;
-Chart.defaults.plugins.tooltip.padding = 12;
-
-// Update chart colors when theme changes
-window.addEventListener('theme-changed', function(e) {
-    const isDark = e.detail.dark;
-    Chart.defaults.color = isDark ? '#94a3b8' : '#64748b';
-
-    // Re-render all charts
-    Chart.helpers.each(Chart.instances, (chart) => {
-        chart.update();
+// Auto-close flash messages
+document.addEventListener('DOMContentLoaded', () => {
+    // Auto-hide alerts after 5 seconds
+    const alerts = document.querySelectorAll('[data-auto-dismiss]');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.classList.add('animate-fade-out');
+            setTimeout(() => alert.remove(), 300);
+        }, 5000);
     });
 });
-
-// Console log for development
-console.log('🏭 Gudang Produksi - Mari Partner');
-console.log('✨ Application initialized successfully');
